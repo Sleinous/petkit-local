@@ -64,9 +64,10 @@ def test_the_stream_name_is_the_petkit_id():
 def test_the_rendered_config_binds_where_we_intend():
     out = g.render_config({"1": "http://d/main.flv?audio=1"}, "/data/go2rtc.log")
     assert f"listen: ':{g.RTSP_PORT}'" in out
-    # The API is loopback-only and WebRTC is off outright: an RTSP source needs
-    # neither, and both would be surface for nothing.
-    assert "127.0.0.1:1984" in out
+    # ONVIF shares go2rtc's HTTP listener, so it must be reachable through an
+    # explicitly mapped host port. Internal control traffic still uses loopback.
+    assert f"listen: '{g.API_LISTEN_ADDR}'" in out
+    assert g.API_LOOPBACK_ADDR == "127.0.0.1:1984"
     assert "webrtc:\n  listen: ''" in out
     assert "  1: http://d/main.flv?audio=1" in out
 

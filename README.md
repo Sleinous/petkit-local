@@ -68,6 +68,35 @@ shell commands or a log upload through it.
   It only pulls from the device while somebody is watching, and it holds a single connection —
   which matters, because the device's own server wants seconds between them.
 
+## ONVIF / UniFi Protect
+
+The bundled go2rtc is also an ONVIF server. Once **Local Camera Streaming** is applied, it can
+present each local PetKit camera to an NVR without the PetKit cloud:
+
+```text
+PetKit camera (local tserver) -> petkit-local go2rtc -> ONVIF / RTSP -> NVR
+```
+
+For the Home Assistant add-on, map both `1984/tcp` and `8554/tcp` in the add-on's **Network**
+settings. In UniFi Protect, use **Advanced Adoption** and enter:
+
+```text
+<Home Assistant LAN IP>:1984
+```
+
+The NVR must be able to reach TCP 1984 (ONVIF) and TCP 8554 (RTSP). This is especially important
+when the NVR and Home Assistant are on separate VLANs, where ONVIF discovery will not cross the
+router.
+
+`1984` intentionally has no application-level credentials. In go2rtc, the ONVIF device service
+shares the HTTP API listener; enabling its Basic authentication breaks some ONVIF clients,
+including UniFi Protect. Restrict both ports at the firewall to the NVR's IP address, and do not
+expose either port to the internet. If Protect requires non-empty credentials in its form, use a
+non-sensitive placeholder: they are not access control.
+
+For the Docker Compose install, port 1984 is loopback-only by default. Replace
+`127.0.0.1:1984:1984` with `1984:1984` only after applying the equivalent firewall rule.
+
 ## 🐈 Supported devices
 
 **Confirmed working.** Somebody has run one of these against this and said what happened. Every

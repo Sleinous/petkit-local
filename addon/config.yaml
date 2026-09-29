@@ -37,6 +37,7 @@ ports:
   443/tcp: 443
   1883/tcp: null
   8099/tcp: null
+  1984/tcp: null
   8554/tcp: null
   9000/tcp: 9000
 ports_description:
@@ -44,6 +45,7 @@ ports_description:
   443/tcp: "PetKit device MQTT over TLS. Port is inferred from localkit; change mqtt_tls_port + this mapping if your device dials a different one (e.g. 1883)."
   1883/tcp: "Optional: expose the plain MQTT listener (internal by default; map a host port only if a device connects plaintext)."
   8099/tcp: "Optional: expose the web panel directly on the LAN (no HA auth) for debugging/curl. Leave unmapped to use auth-only Ingress."
+  1984/tcp: "Optional: go2rtc ONVIF device service and API. Map only when adopting a camera into an NVR, and restrict it at the firewall to that NVR: go2rtc's ONVIF service shares an unauthenticated HTTP listener with its API. Use <Home Assistant LAN IP>:1984 for ONVIF Advanced Adoption."
   8554/tcp: "Camera RTSP, from the bundled go2rtc. Home Assistant reaches this over the internal network without a host port, so leave it unmapped unless you want the stream on your LAN. Mapping it to 8554 would clash with the go2rtc add-on."
   9000/tcp: "Local S3/OSS bucket — device uploads photos/videos/events here instead of PetKit cloud. Files appear in HA media browser."
 # Use the Supervisor MQTT service if it's available (Mosquitto add-on), but

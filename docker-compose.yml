@@ -71,6 +71,12 @@ services:
       #   "8099:8099"            reachable from anywhere on your network
       - "8099:8099"
 
+      # go2rtc's ONVIF device service shares its HTTP API listener. It has no
+      # compatible per-ONVIF authentication, so this is loopback-only by
+      # default. To adopt it into an NVR, replace this with "1984:1984" and
+      # firewall TCP 1984 so only the NVR can reach it.
+      - "127.0.0.1:1984:1984"
+
       # Camera RTSP, served by the bundled go2rtc. This is the address to give
       # Home Assistant's Generic Camera — rtsp://THIS-HOST:8554/<device-id>,
       # and the panel shows the exact URL.

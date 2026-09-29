@@ -60,7 +60,7 @@ log = logging.getLogger(__name__)
 #: it must accept connections from an NVR when the operator deliberately maps
 #: port 1984. The add-on does *not* publish that port by default: go2rtc's API
 #: and ONVIF service share authentication, which makes HTTP Basic auth
-#: incompatible with some ONVIF clients (including UniFi Protect). Keep the
+#: incompatible with some ONVIF clients. Keep the
 #: port unexposed unless it is restricted to the NVR at the network firewall.
 #:
 #: WebRTC is off entirely: an RTSP source does not need it, and its UDP
